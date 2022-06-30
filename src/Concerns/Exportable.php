@@ -7,7 +7,9 @@ namespace Huanhyperf\Excel\Concerns;
 use Huanhyperf\Excel\Exceptions\NoFilenameGivenException;
 use Huanhyperf\Excel\Exceptions\NoFilePathGivenException;
 use Huanhyperf\Excel\Exporter;
-use Illuminate\Foundation\Bus\PendingDispatch;
+use Hyperf\HttpServer\Request;
+use Hyperf\HttpServer\Response;
+use Huanhyperf\Excel\PendingDispatch;
 
 trait Exportable
 {
@@ -17,7 +19,7 @@ trait Exportable
      *
      * @throws NoFilenameGivenException
      *
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download(string $fileName = null, string $writerType = null, array $headers = null)
     {
@@ -96,11 +98,11 @@ trait Exportable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
      * @throws NoFilenameGivenException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function toResponse($request)
     {

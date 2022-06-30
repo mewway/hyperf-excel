@@ -4,7 +4,7 @@ namespace Huanhyperf\Excel\Exceptions;
 
 use LogicException;
 
-class ConcernConflictException extends LogicException implements LaravelExcelException
+class ConcernConflictException extends LogicException implements HyperfExcelException
 {
     /**
      * @return ConcernConflictException

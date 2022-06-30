@@ -35,7 +35,7 @@ interface Exporter
      * @param string $writerType
      * @param mixed  $diskOptions
      *
-     * @return \Illuminate\Foundation\Bus\PendingDispatch
+     * @return Huanhyperf\Excel\PendingDispatch
      */
     public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
 

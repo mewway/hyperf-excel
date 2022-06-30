@@ -5,6 +5,7 @@
 namespace Huanhyperf\Excel;
 
 use Huanhyperf\Excel\Concerns\HasReferencesToOtherSheets;
+use Huanhyperf\Excel\Concerns\ShouldQueue;
 use Huanhyperf\Excel\Concerns\SkipsUnknownSheets;
 use Huanhyperf\Excel\Concerns\WithCalculatedFormulas;
 use Huanhyperf\Excel\Concerns\WithChunkReading;
@@ -21,14 +22,12 @@ use Huanhyperf\Excel\Factories\ReaderFactory;
 use Huanhyperf\Excel\Files\TemporaryFile;
 use Huanhyperf\Excel\Files\TemporaryFileFactory;
 use Huanhyperf\Excel\Transactions\TransactionHandler;
-use Huanhyperf\Excel\Concerns\ShouldQueue;
 use Hyperf\Utils\Collection;
 use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
 
 /** @mixin Spreadsheet */
@@ -86,14 +85,16 @@ class Reader
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
+     * @param $import
+     * @param $filePath
      *
-     * @throws NoTypeDetectedException
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws Exception
+     * @throws NoTypeDetectedException
+     * @throws SheetNotFoundException
+     * @throws Throwable
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      *
-     * @return $this|\Illuminate\Foundation\Bus\PendingDispatch
+     * @return null|$this|PendingDispatch
      */
     public function read($import, $filePath, string $readerType = null, string $disk = null)
     {
@@ -139,14 +140,13 @@ class Reader
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string              $readerType
+     * @param $import
+     * @param $filePath
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws NoTypeDetectedException
-     * @throws Exceptions\SheetNotFoundException
+     * @throws SheetNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function toArray($import, $filePath, string $readerType = null, string $disk = null): array
     {
@@ -181,14 +181,13 @@ class Reader
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string              $readerType
+     * @param $import
+     * @param $filePath
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws NoTypeDetectedException
-     * @throws Exceptions\SheetNotFoundException
+     * @throws SheetNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function toCollection($import, $filePath, string $readerType = null, string $disk = null): Collection
     {
@@ -396,14 +395,10 @@ class Reader
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string              $disk
+     * @param $import
+     * @param $filePath
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws NoTypeDetectedException
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     private function getReader($import, $filePath, string $readerType = null, string $disk = null): IReader
     {

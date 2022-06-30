@@ -1,16 +1,17 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;
 
-class NoFilePathGivenException extends InvalidArgumentException implements LaravelExcelException
+class NoFilePathGivenException extends InvalidArgumentException implements HyperfExcelException
 {
     /**
-     * @param  string  $message
-     * @param  int  $code
-     * @param  Throwable|null  $previous
+     * @param string $message
+     * @param int    $code
      */
     public function __construct(
         $message = 'A filepath needs to be passed.',

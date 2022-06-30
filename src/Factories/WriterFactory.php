@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Factories;
 
 use Huanhyperf\Excel\Cache\CacheManager;
@@ -11,6 +13,7 @@ use Huanhyperf\Excel\Concerns\WithPreCalculateFormulas;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Html;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
@@ -19,19 +22,16 @@ class WriterFactory
     use MapsCsvSettings;
 
     /**
-     * @param  string  $writerType
-     * @param  Spreadsheet  $spreadsheet
-     * @param  object  $export
-     * @return IWriter
+     * @param object $export
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws Exception
      */
     public static function make(string $writerType, Spreadsheet $spreadsheet, $export): IWriter
     {
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
         $writer->setUseDiskCaching(
-            config('excel.cache.driver', CacheManager::DRIVER_MEMORY) !== CacheManager::DRIVER_MEMORY
+            CacheManager::DRIVER_MEMORY !== config('excel.cache.driver', CacheManager::DRIVER_MEMORY)
         );
 
         if (static::includesCharts($export)) {
@@ -71,7 +71,6 @@ class WriterFactory
 
     /**
      * @param $export
-     * @return bool
      */
     private static function includesCharts($export): bool
     {

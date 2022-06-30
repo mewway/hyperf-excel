@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Factories;
 
 use Huanhyperf\Excel\Concerns\MapsCsvSettings;
@@ -20,10 +22,8 @@ class ReaderFactory
     use MapsCsvSettings;
 
     /**
-     * @param  object  $import
-     * @param  TemporaryFile  $file
-     * @param  string  $readerType
-     * @return IReader
+     * @param object $import
+     * @param string $readerType
      *
      * @throws Exception
      */
@@ -38,7 +38,7 @@ class ReaderFactory
         }
 
         if (method_exists($reader, 'setReadEmptyCells')) {
-            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
+            $reader->setReadEmptyCells(! config('excel.imports.ignore_empty', false));
         }
 
         if ($reader instanceof Csv) {
@@ -68,9 +68,6 @@ class ReaderFactory
     }
 
     /**
-     * @param  TemporaryFile  $temporaryFile
-     * @return string
-     *
      * @throws NoTypeDetectedException
      */
     private static function identify(TemporaryFile $temporaryFile): string

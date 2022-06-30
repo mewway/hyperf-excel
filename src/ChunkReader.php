@@ -17,13 +17,13 @@ use Huanhyperf\Excel\Jobs\AfterImportJob;
 use Huanhyperf\Excel\Jobs\QueueImport;
 use Huanhyperf\Excel\Jobs\ReadChunk;
 use Hyperf\Utils\Collection;
-use Illuminate\Foundation\Bus\PendingDispatch;
+use Huanhyperf\Excel\PendingDispatch;
 use Throwable;
 
 class ChunkReader
 {
     /**
-     * @return null|\Illuminate\Foundation\Bus\PendingDispatch
+     * @return null|PendingDispatch
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {

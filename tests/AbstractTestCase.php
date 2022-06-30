@@ -5,6 +5,7 @@
 namespace HyperfTest;
 
 use Hyperf\Cache\Driver\CoroutineMemoryDriver;
+use Hyperf\Cache\Driver\RedisDriver;
 use Hyperf\Config\Config;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\ContainerInterface;
@@ -12,9 +13,8 @@ use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Arr;
-use PHPUnit\Framework\TestCase;
-use Hyperf\Cache\Driver\RedisDriver;
 use Hyperf\Utils\Packer\PhpSerializerPacker;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -33,9 +33,13 @@ class AbstractTestCase extends TestCase
         $container = \Mockery::mock(Container::class, [(new DefinitionSourceFactory(true))()])->makePartial();
         $this->container = $container;
         ApplicationContext::setContainer($this->container);
+        $this->container->define(\Psr\Container\ContainerInterface::class, function () use ($container) {
+            return $container;
+        });
         $this->container->define(ConfigInterface::class, function () {
             $config = \Mockery::mock(Config::class);
             $config->shouldReceive('get')->andReturnUsing([$this, 'getFakeConfig']);
+
             return $config;
         });
     }
@@ -59,7 +63,17 @@ class AbstractTestCase extends TestCase
                     'packer' => PhpSerializerPacker::class,
                 ],
             ],
+            'file' => [
+                'default' => 'local',
+                'storage' => [
+                    'local' => [
+                        'driver' => \Hyperf\Filesystem\Adapter\LocalAdapterFactory::class,
+                        'root' => BASE_PATH,
+                    ],
+                ],
+            ],
         ];
+
         return Arr::get($fakeConfig, $key, $default);
     }
 }

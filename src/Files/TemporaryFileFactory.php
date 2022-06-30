@@ -57,6 +57,6 @@ class TemporaryFileFactory
 
     private function generateFilename(string $fileExtension = null): string
     {
-        return 'laravel-excel-' . Str::random(32) . ($fileExtension ? '.' . $fileExtension : '');
+        return 'export-excel-' . Str::random(32) . ($fileExtension ? '.' . $fileExtension : '');
     }
 }

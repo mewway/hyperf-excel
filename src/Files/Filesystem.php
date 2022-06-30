@@ -27,7 +27,7 @@ class Filesystem
     public function disk(string $disk = null, array $diskOptions = []): Disk
     {
         return new Disk(
-            $this->filesystem->disk($disk),
+            $this->filesystem->get($disk ?? 'local'),
             $disk,
             $diskOptions
         );

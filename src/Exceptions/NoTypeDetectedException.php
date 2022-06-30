@@ -5,7 +5,7 @@ namespace Huanhyperf\Excel\Exceptions;
 use Exception;
 use Throwable;
 
-class NoTypeDetectedException extends Exception implements LaravelExcelException
+class NoTypeDetectedException extends Exception implements HyperfExcelException
 {
     /**
      * @param  string  $message

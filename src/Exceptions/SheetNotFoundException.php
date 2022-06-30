@@ -2,7 +2,7 @@
 
 namespace Huanhyperf\Excel\Exceptions;
 
-class SheetNotFoundException extends \Exception implements LaravelExcelException
+class SheetNotFoundException extends \Exception implements HyperfExcelException
 {
     /**
      * @param  string  $name

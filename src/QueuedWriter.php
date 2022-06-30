@@ -6,7 +6,6 @@ namespace Huanhyperf\Excel;
 
 use Huanhyperf\Excel\Concerns\FromCollection;
 use Huanhyperf\Excel\Concerns\FromQuery;
-use Huanhyperf\Excel\Concerns\FromView;
 use Huanhyperf\Excel\Concerns\WithCustomChunkSize;
 use Huanhyperf\Excel\Concerns\WithCustomQuerySize;
 use Huanhyperf\Excel\Concerns\WithMultipleSheets;
@@ -18,7 +17,7 @@ use Huanhyperf\Excel\Jobs\AppendViewToSheet;
 use Huanhyperf\Excel\Jobs\CloseSheet;
 use Huanhyperf\Excel\Jobs\QueueExport;
 use Huanhyperf\Excel\Jobs\StoreQueuedExport;
-use Illuminate\Foundation\Bus\PendingDispatch;
+use Huanhyperf\Excel\PendingDispatch;
 use Hyperf\Utils\Collection;
 use Traversable;
 
@@ -51,7 +50,7 @@ class QueuedWriter
      * @param string       $disk
      * @param array|string $diskOptions
      *
-     * @return \Illuminate\Foundation\Bus\PendingDispatch
+     * @return Huanhyperf\Excel\PendingDispatch
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
@@ -88,8 +87,6 @@ class QueuedWriter
                 $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromQuery) {
                 $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
-            } elseif ($sheetExport instanceof FromView) {
-                $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             }
 
             $jobs->push(new CloseSheet($sheetExport, $temporaryFile, $writerType, $sheetIndex));
@@ -145,23 +142,6 @@ class QueuedWriter
                 $this->getChunkSize($export)
             ));
         }
-
-        return $jobs;
-    }
-
-    private function exportView(
-        FromView $export,
-        TemporaryFile $temporaryFile,
-        string $writerType,
-        int $sheetIndex
-    ): Collection {
-        $jobs = new Collection();
-        $jobs->push(new AppendViewToSheet(
-            $export,
-            $temporaryFile,
-            $writerType,
-            $sheetIndex
-        ));
 
         return $jobs;
     }

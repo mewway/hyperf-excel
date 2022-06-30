@@ -1,14 +1,16 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Files;
 
-use Huanhyperf\Excel\Files\Filesystem as HyperfFilesystem;
+use League\Flysystem\Filesystem as HyperfFilesystem;
 
 /**
- * @method bool get(string $filename)
+ * @method bool     get(string $filename)
  * @method resource readStream(string $filename)
- * @method bool delete(string $filename)
- * @method bool exists(string $filename)
+ * @method bool     delete(string $filename)
+ * @method bool     exists(string $filename)
  */
 class Disk
 {
@@ -18,7 +20,7 @@ class Disk
     protected $disk;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $name;
 
@@ -27,21 +29,17 @@ class Disk
      */
     protected $diskOptions;
 
-    /**
-     * @param  HyperfFilesystem  $disk
-     * @param  string|null  $name
-     * @param  array  $diskOptions
-     */
     public function __construct(HyperfFilesystem $disk, string $name = null, array $diskOptions = [])
     {
-        $this->disk        = $disk;
-        $this->name        = $name;
+        $this->disk = $disk;
+        $this->name = $name;
         $this->diskOptions = $diskOptions;
     }
 
     /**
-     * @param  string  $name
-     * @param  array  $arguments
+     * @param string $name
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public function __call($name, $arguments)
@@ -50,27 +48,20 @@ class Disk
     }
 
     /**
-     * @param  string  $destination
-     * @param  string|resource  $contents
-     * @return bool
+     * @param resource|string $contents
      */
     public function put(string $destination, $contents): bool
     {
         return $this->disk->put($destination, $contents, $this->diskOptions);
     }
 
-    /**
-     * @param  TemporaryFile  $source
-     * @param  string  $destination
-     * @return bool
-     */
     public function copy(TemporaryFile $source, string $destination): bool
     {
         $readStream = $source->readStream();
 
         if (realpath($destination)) {
             $tempStream = fopen($destination, 'rb+');
-            $success    = stream_copy_to_stream($readStream, $tempStream) !== false;
+            $success = false !== stream_copy_to_stream($readStream, $tempStream);
 
             if (is_resource($tempStream)) {
                 fclose($tempStream);
@@ -86,9 +77,6 @@ class Disk
         return $success;
     }
 
-    /**
-     * @param  string  $filename
-     */
     public function touch(string $filename)
     {
         $this->disk->put($filename, '', $this->diskOptions);
