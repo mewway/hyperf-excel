@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Concerns;
 
 trait WithConditionalSheets
@@ -10,7 +12,8 @@ trait WithConditionalSheets
     protected $conditionallySelectedSheets = [];
 
     /**
-     * @param  string|array  $sheets
+     * @param array|string $sheets
+     *
      * @return $this
      */
     public function onlySheets($sheets)
@@ -20,9 +23,6 @@ trait WithConditionalSheets
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function sheets(): array
     {
         return \array_filter($this->conditionalSheets(), function ($name) {
@@ -30,8 +30,5 @@ trait WithConditionalSheets
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    /**
-     * @return array
-     */
     abstract public function conditionalSheets(): array;
 }

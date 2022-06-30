@@ -1,14 +1,15 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
+use Hyperf\Database\Model\Model;
 
 interface ToModel
 {
     /**
-     * @param  array  $row
-     * @return Model|Model[]|null
+     * @return null|Model|Model[]
      */
     public function model(array $row);
 }

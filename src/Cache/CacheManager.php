@@ -21,11 +21,6 @@ class CacheManager extends Manager
     public const DRIVER_MEMORY = 'memory';
 
     /**
-     * @const string
-     */
-    public const DRIVER_ILLUMINATE = 'illuminate';
-
-    /**
      * Get the default driver name.
      */
     public function getDefaultDriver(): string
@@ -49,21 +44,24 @@ class CacheManager extends Manager
     public function createBatchDriver(): CacheInterface
     {
         return new BatchCache(
-            $this->createIlluminateDriver(),
+            $this->createHyperfCacheDriver(),
             $this->createMemoryDriver()
         );
     }
 
-    public function createIlluminateDriver(): CacheInterface
+    public function createHyperfCacheDriver(): CacheInterface
     {
-        return Cache::driver(
-            config('excel.cache.illuminate.store')
-        );
+        return make(Cache::class);
     }
 
     public function flush()
     {
         $this->driver()->clear();
+    }
+
+    public function driver(string $driver = null): CacheInterface
+    {
+        return $this->getDriver($this->getDefaultDriver());
     }
 
     public function isInMemory(): bool

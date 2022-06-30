@@ -2,7 +2,7 @@
 
 namespace Huanhyperf\Excel\Concerns;
 
-use Illuminate\Support\Collection;
+use Hyperf\Utils\Collection;
 
 interface ToCollection
 {

@@ -2,7 +2,7 @@
 
 namespace Huanhyperf\Excel\Concerns;
 
-use Illuminate\Console\OutputStyle;
+use Symfony\Component\Console\Style\SymfonyStyle as OutputStyle;
 
 interface WithProgressBar
 {

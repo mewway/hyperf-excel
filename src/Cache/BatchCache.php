@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Cache;
 
 use Psr\SimpleCache\CacheInterface;
@@ -16,13 +18,9 @@ class BatchCache implements CacheInterface
      */
     protected $memory;
 
-    /**
-     * @param  CacheInterface  $cache
-     * @param  MemoryCache  $memory
-     */
     public function __construct(CacheInterface $cache, MemoryCache $memory)
     {
-        $this->cache  = $cache;
+        $this->cache = $cache;
         $this->memory = $memory;
     }
 
@@ -80,7 +78,7 @@ class BatchCache implements CacheInterface
     public function getMultiple($keys, $default = null)
     {
         // Check if all keys are still in memory
-        $memory              = $this->memory->getMultiple($keys, $default);
+        $memory = $this->memory->getMultiple($keys, $default);
         $actualItemsInMemory = count(array_filter($memory));
 
         if ($actualItemsInMemory === count($keys)) {
@@ -88,7 +86,7 @@ class BatchCache implements CacheInterface
         }
 
         // Get all rows from cache if none is hold in memory.
-        if ($actualItemsInMemory === 0) {
+        if (0 === $actualItemsInMemory) {
             return $this->cache->getMultiple($keys, $default);
         }
 

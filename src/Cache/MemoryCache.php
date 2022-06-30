@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Cache;
 
 use Psr\SimpleCache\CacheInterface;
@@ -7,7 +9,7 @@ use Psr\SimpleCache\CacheInterface;
 class MemoryCache implements CacheInterface
 {
     /**
-     * @var int|null
+     * @var null|int
      */
     protected $memoryLimit;
 
@@ -16,9 +18,6 @@ class MemoryCache implements CacheInterface
      */
     protected $cache = [];
 
-    /**
-     * @param  int|null  $memoryLimit
-     */
     public function __construct(int $memoryLimit = null)
     {
         $this->memoryLimit = $memoryLimit;
@@ -111,9 +110,6 @@ class MemoryCache implements CacheInterface
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function reachedMemoryLimit(): bool
     {
         // When no limit is given, we'll never reach any limit.
@@ -124,9 +120,6 @@ class MemoryCache implements CacheInterface
         return count($this->cache) >= $this->memoryLimit;
     }
 
-    /**
-     * @return array
-     */
     public function flush(): array
     {
         $memory = $this->cache;
