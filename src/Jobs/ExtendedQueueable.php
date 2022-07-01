@@ -8,10 +8,6 @@ use Huanhyperf\Excel\Jobs\Traits\Queueable;
 
 trait ExtendedQueueable
 {
-    use Queueable {
-        chain as originalChain;
-    }
-
     /**
      * @param $chain
      *
