@@ -24,28 +24,17 @@ class DiskTest extends AbstractTestCase
 
     public function testTouch()
     {
-        $this->getDisk()->touch('composer.json');
-        $this->assertTrue(true);
+        $this->getDisk()->touch('tests/Files/fake.text');
+        $content = file_get_contents(BASE_PATH . '/tests/Files/fake.text');
+        $this->assertEmpty($content);
     }
 
     public function testPut()
     {
-    }
-
-    public function testCopy()
-    {
-    }
-
-    public function testGet()
-    {
-    }
-
-    public function testDelete()
-    {
-    }
-
-    public function testReadStream()
-    {
+        $contents = 'hahaha';
+        $this->getDisk()->put('tests/Files/fake.text', $contents);
+        $str = file_get_contents(BASE_PATH . '/tests/Files/fake.text');
+        $this->assertEquals($contents, $str);
     }
 
     public function getDisk(): Disk
