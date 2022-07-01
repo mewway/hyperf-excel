@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Files;
 
 use Hyperf\Filesystem\FilesystemFactory as Factory;
@@ -7,29 +9,33 @@ use Hyperf\Filesystem\FilesystemFactory as Factory;
 class Filesystem
 {
     /**
-     * @var Factory
+     * @var FilesystemAdapter
      */
     private $filesystem;
 
     /**
-     * @param  Factory  $filesystem
+     * @var Factory
      */
-    public function __construct(Factory $filesystem)
+    private $driver;
+
+    public function __construct(Factory $driver)
     {
-        $this->filesystem = $filesystem;
+        $this->driver = $driver;
     }
 
-    /**
-     * @param  string|null  $disk
-     * @param  array  $diskOptions
-     * @return Disk
-     */
     public function disk(string $disk = null, array $diskOptions = []): Disk
     {
         return new Disk(
-            $this->filesystem->get($disk ?? 'local'),
+            $this->getAdapter($disk),
             $disk,
             $diskOptions
         );
+    }
+
+    private function getAdapter(string $disk = null)
+    {
+        $driver = $this->driver->get($disk ?? 'local');
+
+        return $this->filesystem = new FilesystemAdapter($driver);
     }
 }

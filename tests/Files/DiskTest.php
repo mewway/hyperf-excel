@@ -6,9 +6,7 @@ namespace HyperfTest\Files;
 
 use Huanhyperf\Excel\Files\Disk;
 use Huanhyperf\Excel\Files\Filesystem;
-use Hyperf\Filesystem\FilesystemFactory;
 use HyperfTest\AbstractTestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * @internal
@@ -26,8 +24,8 @@ class DiskTest extends AbstractTestCase
 
     public function testTouch()
     {
-        $resp = $this->getDisk()->touch('composer.json');
-        $this->assertNull($resp);
+        $this->getDisk()->touch('composer.json');
+        $this->assertTrue(true);
     }
 
     public function testPut()
@@ -52,6 +50,11 @@ class DiskTest extends AbstractTestCase
 
     public function getDisk(): Disk
     {
-        return make(Disk::class);
+        /**
+         * @var Filesystem $fileSystem
+         */
+        $fileSystem = make(Filesystem::class);
+
+        return $fileSystem->disk();
     }
 }

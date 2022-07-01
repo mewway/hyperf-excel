@@ -4,7 +4,7 @@
 
 namespace Huanhyperf\Excel\Files;
 
-use League\Flysystem\Filesystem as HyperfFilesystem;
+use Huanhyperf\Excel\Files\FilesystemAdapter as HyperfFilesystem;
 
 /**
  * @method bool     get(string $filename)
