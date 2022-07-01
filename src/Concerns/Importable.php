@@ -127,6 +127,6 @@ trait Importable
 
     private function getImporter(): Importer
     {
-        return app(Importer::class);
+        return make(Importer::class);
     }
 }

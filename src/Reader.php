@@ -81,7 +81,7 @@ class Reader
 
     public function __wakeup()
     {
-        $this->transaction = app(TransactionHandler::class);
+        $this->transaction = make(TransactionHandler::class);
     }
 
     /**
@@ -234,7 +234,7 @@ class Reader
     public function setDefaultValueBinder(): self
     {
         Cell::setValueBinder(
-            app(config('excel.value_binder.default', DefaultValueBinder::class))
+            make(config('excel.value_binder.default', DefaultValueBinder::class))
         );
 
         return $this;

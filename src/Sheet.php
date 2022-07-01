@@ -90,7 +90,7 @@ class Sheet
     {
         $this->worksheet = $worksheet;
         $this->chunkSize = config('excel.exports.chunk_size', 100);
-        $this->temporaryFileFactory = app(TemporaryFileFactory::class);
+        $this->temporaryFileFactory = make(TemporaryFileFactory::class);
     }
 
     /**
@@ -247,10 +247,10 @@ class Sheet
         $endColumn = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         if ($import instanceof WithMappedCells) {
-            app(MappedReader::class)->map($import, $this->worksheet);
+            make(MappedReader::class)->map($import, $this->worksheet);
         } else {
             if ($import instanceof ToModel) {
-                app(ModelImporter::class)->import($this->worksheet, $import, $startRow);
+                make(ModelImporter::class)->import($this->worksheet, $import, $startRow);
             }
 
             if ($import instanceof ToCollection) {
@@ -292,7 +292,7 @@ class Sheet
                         $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn)];
 
                         try {
-                            app(RowValidator::class)->validate($toValidate, $import);
+                            make(RowValidator::class)->validate($toValidate, $import);
                             $import->onRow($sheetRow);
                         } catch (RowSkippedException $e) {
                         }
@@ -642,7 +642,7 @@ class Sheet
         });
 
         try {
-            app(RowValidator::class)->validate($toValidate->toArray(), $import);
+            make(RowValidator::class)->validate($toValidate->toArray(), $import);
         } catch (RowSkippedException $e) {
             foreach ($e->skippedRows() as $row) {
                 unset($rows[$row - $startRow]);

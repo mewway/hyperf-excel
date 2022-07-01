@@ -111,6 +111,6 @@ trait Exportable
 
     private function getExporter(): Exporter
     {
-        return app(Exporter::class);
+        return make(Exporter::class);
     }
 }

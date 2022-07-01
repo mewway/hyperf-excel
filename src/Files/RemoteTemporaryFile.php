@@ -118,6 +118,6 @@ class RemoteTemporaryFile extends TemporaryFile
 
     public function disk(): Disk
     {
-        return $this->diskInstance ?: $this->diskInstance = app(Filesystem::class)->disk($this->disk);
+        return $this->diskInstance ?: $this->diskInstance = make(Filesystem::class)->disk($this->disk);
     }
 }
