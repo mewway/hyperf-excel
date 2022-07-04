@@ -11,7 +11,7 @@ class ImportTest extends AbstractTestCase
     {
         $import = new TestImport();
         $excel = $this->getExcel()->import($import, 'tests/FakeImportFiles/user_import.fake.csv', 'local', Excel::CSV);
-        $excel->getTotalRows();
+        $this->assertInstanceOf(Excel::class, $excel);
     }
 
     public function getExcel(): Excel

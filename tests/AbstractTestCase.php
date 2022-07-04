@@ -4,6 +4,10 @@
 
 namespace HyperfTest;
 
+use Huanhyperf\Excel\Excel;
+use Huanhyperf\Excel\Files\TemporaryFileFactory;
+use Huanhyperf\Excel\Transactions\NullTransactionHandler;
+use Huanhyperf\Excel\Transactions\TransactionHandler;
 use Hyperf\Cache\Driver\CoroutineMemoryDriver;
 use Hyperf\Cache\Driver\RedisDriver;
 use Hyperf\Config\Config;
@@ -35,6 +39,12 @@ class AbstractTestCase extends TestCase
         ApplicationContext::setContainer($this->container);
         $this->container->define(\Psr\Container\ContainerInterface::class, function () use ($container) {
             return $container;
+        });
+        $this->container->define(TransactionHandler::class, function () {
+            return make(NullTransactionHandler::class);
+        });
+        $this->container->define(TemporaryFileFactory::class, function () {
+            return new TemporaryFileFactory($this->getFakeConfig('excel.temporary_files.local_path'));
         });
         $this->container->define(ConfigInterface::class, function () {
             $config = \Mockery::mock(Config::class);
@@ -178,7 +188,7 @@ class AbstractTestCase extends TestCase
                     |
                     */
                     'heading_row' => [
-                        'formatter' => 'slug',
+                        'formatter' => 'none',
                     ],
 
                     /*
@@ -274,7 +284,7 @@ class AbstractTestCase extends TestCase
                 |
                 */
                 'value_binder' => [
-                    'default' => Huanhyperf\Excel\DefaultValueBinder::class,
+                    'default' => \Huanhyperf\Excel\DefaultValueBinder::class,
                 ],
 
                 'cache' => [
@@ -343,7 +353,7 @@ class AbstractTestCase extends TestCase
                 |
                 */
                 'transactions' => [
-                    'handler' => 'db',
+                    'handler' => 'null',
                     'db' => [
                         'connection' => null,
                     ],
@@ -359,7 +369,7 @@ class AbstractTestCase extends TestCase
                     | storing reading or downloading. Here you can customize that path.
                     |
                     */
-                    'local_path' => BASE_PATH . '/storage/excel',
+                    'local_path' => BASE_PATH . '/tests/runtime',
 
                     /*
                     |--------------------------------------------------------------------------
@@ -395,7 +405,7 @@ class AbstractTestCase extends TestCase
                     */
                     'force_resync_remote' => null,
                 ],
-            ]
+            ],
         ];
 
         return Arr::get($fakeConfig, $key, $default);

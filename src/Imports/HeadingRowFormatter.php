@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel\Imports;
 
 use Hyperf\Utils\Collection;
@@ -11,12 +13,12 @@ class HeadingRowFormatter
     /**
      * @const string
      */
-    const FORMATTER_NONE = 'none';
+    public const FORMATTER_NONE = 'none';
 
     /**
      * @const string
      */
-    const FORMATTER_SLUG = 'slug';
+    public const FORMATTER_SLUG = 'slug';
 
     /**
      * @var string
@@ -36,33 +38,26 @@ class HeadingRowFormatter
         self::FORMATTER_SLUG,
     ];
 
-    /**
-     * @param  array  $headings
-     * @return array
-     */
     public static function format(array $headings): array
     {
-        return (new Collection($headings))->map(function ($value, $key) {
+        $result = (new Collection($headings))->map(function ($value, $key) {
             return static::callFormatter($value, $key);
         })->toArray();
+        return $result;
     }
 
     /**
-     * @param  string  $name
+     * @param string $name
      */
     public static function default(string $name = null)
     {
-        if (null !== $name && !isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
+        if (null !== $name && ! isset(static::$customFormatters[$name]) && ! in_array($name, static::$defaultFormatters, true)) {
             throw new InvalidArgumentException(sprintf('Formatter "%s" does not exist', $name));
         }
 
         static::$formatter = $name;
     }
 
-    /**
-     * @param  string  $name
-     * @param  callable  $formatter
-     */
     public static function extend(string $name, callable $formatter)
     {
         static::$customFormatters[$name] = $formatter;
@@ -77,10 +72,12 @@ class HeadingRowFormatter
     }
 
     /**
-     * @param  mixed  $value
+     * @param mixed      $value
+     * @param null|mixed $key
+     *
      * @return mixed
      */
-    protected static function callFormatter($value, $key=null)
+    protected static function callFormatter($value, $key = null)
     {
         static::$formatter = static::$formatter ?? config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 
@@ -91,8 +88,8 @@ class HeadingRowFormatter
             return $formatter($value, $key);
         }
 
-        if (static::$formatter === self::FORMATTER_SLUG) {
-            return Str::slug($value, '_');
+        if (self::FORMATTER_SLUG === static::$formatter) {
+            return Str::slug($value ?? '', '_');
         }
 
         // No formatter (FORMATTER_NONE)

@@ -134,7 +134,10 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * {@inheritdoc}
+     * @param $import
+     * @param $filePath
+     *
+     * @return $this
      */
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {

@@ -1,5 +1,7 @@
 <?php
 
+// This file is part of HuanLeGuang Project, Created by php-cs-fixer 3.0.
+
 namespace Huanhyperf\Excel;
 
 use Huanhyperf\Excel\Events\AfterSheet;
@@ -15,16 +17,11 @@ trait RegistersCustomConcerns
      */
     private static $eventMap = [
         BeforeWriting::class => Writer::class,
-        BeforeExport::class  => Writer::class,
-        BeforeSheet::class   => Sheet::class,
-        AfterSheet::class    => Sheet::class,
+        BeforeExport::class => Writer::class,
+        BeforeSheet::class => Sheet::class,
+        AfterSheet::class => Sheet::class,
     ];
 
-    /**
-     * @param  string  $concern
-     * @param  callable  $handler
-     * @param  string  $event
-     */
     public static function extend(string $concern, callable $handler, string $event = BeforeWriting::class)
     {
         /** @var HasEventBus $delegate */
