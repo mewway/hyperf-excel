@@ -26,9 +26,7 @@ class Cell
     }
 
     /**
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     *
-     * @return Cell
+     * @return static
      */
     public static function make(Worksheet $worksheet, string $coordinate)
     {
@@ -41,11 +39,13 @@ class Cell
     }
 
     /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
+     * @param $nullValue
+     * @param $calculateFormulas
+     * @param $formatData
      *
-     * @return mixed
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     *
+     * @return null|mixed|string
      */
     public function getValue($nullValue = null, $calculateFormulas = false, $formatData = true)
     {

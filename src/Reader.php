@@ -161,7 +161,6 @@ class Reader
             $formatData = $sheetImport instanceof WithFormatData;
             if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
                 $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData);
-
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
                 if (! ($sheetImport instanceof HasReferencesToOtherSheets)) {
                     $sheet->disconnect();
@@ -170,7 +169,6 @@ class Reader
                 }
             }
         }
-
         foreach ($sheetsToDisconnect as $sheet) {
             $sheet->disconnect();
         }

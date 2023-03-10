@@ -342,7 +342,6 @@ class Sheet
             }
 
             $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
-
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);
             }

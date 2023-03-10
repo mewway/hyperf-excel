@@ -24,6 +24,6 @@ class TestImport implements ToArray, WithHeadingRow
 
     public function headingRow(): int
     {
-        return 2;
+        return 1;
     }
 }
